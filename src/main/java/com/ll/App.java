@@ -28,6 +28,8 @@ public class App {
                 actionRegist();
             else if(cmd.equals("목록"))
                 actionList();
+            else if(cmd.startsWith("삭제?"))
+                actionRemove(cmd);
         }
     }
     void actionRegist() {
@@ -57,6 +59,13 @@ public class App {
                 System.out.printf("%d / %s / %s\n", quotation.id, quotation.author, quotation.content);
             }
         }
+    }
 
+    void actionRemove(String cmd){
+        String removeId = cmd.replace("삭제?id=", "");
+
+        int id = Integer.parseInt(removeId);
+        quotations.remove(id-1);
+        System.out.printf("%d번 명언이 삭제되었습니다.\n", id);
     }
 }
