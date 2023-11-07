@@ -31,6 +31,8 @@ public class App {
                 actionList();
             else if (cmd.startsWith("삭제?"))
                 actionRemove(cmd);
+            else if (cmd.startsWith("수정?"))
+                actionModify(cmd);
         }
     }
 
@@ -79,7 +81,29 @@ public class App {
         System.out.printf("%d번 명언이 삭제되었습니다.\n", id);
     }
 
-    int getIndexOfQuotationById(int id) {                   // id를 매개변수로 받음
+    void actionModify(String cmd) {
+        int id = getId(cmd, "id", 0);
+        if (id == 0) {
+            System.out.println("id를 다시 입력해주세요.");
+            return;
+        }
+
+        int index = getIndexOfQuotationById(id);
+
+        Quotation quotation = quotations.get(index);
+        System.out.printf("명언(기존) : %s\n", quotation.content);
+        System.out.printf("명언 : ");
+        String content = scanner.nextLine();
+
+        System.out.printf("작가(기존) : %s\n", quotation.author);
+        System.out.printf("작가 : ");
+        String author = scanner.nextLine();
+
+        quotations.set(index, new Quotation(id, content, author));
+    }
+
+
+    int getIndexOfQuotationById(int id) {                   // 리스트 존재하는지 확인하는 메소드 id를 매개변수로 받음
         for (int i = 0; i < quotations.size(); i++) {       // for문을 이용해서 리스트 0번부터 마지막까지 탐색
             Quotation quotation = quotations.get(i);        // 리스트에서 i번 값을 가져옴
             if (quotation.id == id) {                       // 가져온 i번 값의 id가 매개변수 id와 같으면
@@ -89,7 +113,7 @@ public class App {
         return -1;      // 해당 안될 경우 -1 리턴
     }
 
-    int getId(String cmd, String paramName, int defaultValue) {
+    int getId(String cmd, String paramName, int defaultValue) {                         // ?id= 분리 메소드
         //String[] cmdArray = cmd.split("\\?", 2); //삭제?id=1를 ? 기준 두덩이로 잘라 배열에 저장
         //String idString = cmdArray[1];    //배열[1]에 들어있는 id=1을 queryString에 저장
         //String[] idStringArray = idString.split("&");  //idString 값 idStringArray에 저장
